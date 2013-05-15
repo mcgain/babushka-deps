@@ -20,7 +20,6 @@ end
 def compile
   cd "vim" do
     shell("make distclean")
-    debugger
     shell("./configure " + options)
     shell("make")
   end
