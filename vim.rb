@@ -1,5 +1,5 @@
 dep "vim" do
-  requires ["packages.lib", "languages", "vim-source", "vim-config"]
+  requires ["packages", "languages", "vim-source", "vim-config"]
 
   met? {
     requirements
@@ -63,17 +63,38 @@ end
     provides "hg"
   end
 
-  dep "packages.lib" do
-    installs "libncurses5-dev"
-    installs "libgnome2-dev"
-    installs "libgnomeui-dev"
-    installs "libgtk2.0-dev"
-    installs "libatk1.0-dev"
-    installs "libbonoboui2-dev"
-    installs "libcairo2-dev"
-    installs "libx11-dev"
-    installs "libxpm-dev"
-    installs "libxt-dev"
+  dep "packages" do
+    requires ['ncurses.lib', 'mac', 'ubuntu.lib']
+  end
+
+  dep "mac" do
+    if Babushka::SystemDetector.profile_for_host.osx?
+      requires ['docutils.pip']
+    end
+  end
+
+  dep "docutils.pip" do
+    installs 'docutils'
+    provides 'rst2html.py'
+  end
+
+  dep "ubuntu.lib" do
+    installs { via :apt, "libgnome2-dev" }
+    installs { via :apt, "libgnomeui-dev" }
+    installs { via :apt, "libgtk2.0-dev" }
+    installs { via :apt, "libatk1.0-dev" }
+    installs { via :apt, "libbonoboui2-dev" }
+    installs { via :apt, "libcairo2-dev" }
+    installs { via :apt, "libx11-dev" }
+    installs { via :apt, "libxpm-dev" }
+    installs { via :apt, "libxt-dev" }
+  end
+
+  dep 'ncurses.lib' do
+    installs {
+      via :apt, 'libncurses5-dev', 'libncursesw5-dev'
+      via :brew, 'ncurses'
+    }
   end
 
   dep "languages" do
