@@ -88,6 +88,7 @@ end
     installs { via :apt, "libx11-dev" }
     installs { via :apt, "libxpm-dev" }
     installs { via :apt, "libxt-dev" }
+    installs { via :apt, "libpython2.7-dev" }
   end
 
   dep 'ncurses.lib' do
