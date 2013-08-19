@@ -12,9 +12,12 @@ end
 
 def requirements
   return false unless "vim/src/vim".p.exists?
+  result = true
   cd "vim" do
-    shell("src/vim --version").include?("+python")
+    result &= shell("src/vim --version").include?("+python")
+    result &= shell("src/vim --version").include?("+ruby")
   end
+  result
 end
 
 def compile
@@ -38,12 +41,13 @@ def options
   "--enable-cscope=yes",
   "--enable-fontset",
   "--enable-rubyinterp",
-  "--with-ruby-command=/home/mcgain/.rvm/rubies/ruby-1.9.3-p286/bin/ruby",
+  "--with-ruby-command=/opt/boxen/rbenv/shims/ruby",
   "--enable-pythoninterp",
   "--with-python-config-dir=/usr/lib/python2.6/config"
   ].join(" ")
 end
 
+  #"--with-ruby-command=/home/mcgain/.rvm/rubies/ruby-1.9.3-p286/bin/ruby",
   dep "vim-config" do
 
   end
