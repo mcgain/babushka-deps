@@ -7,19 +7,20 @@ dep 'env' do
   requires 'dotfiles'
   requires 'ag.bin'
   requires 'ctags'
+  requires 'selecta'
 end
 
 dep 'ctags' do
   requires 'ctags.bin'
   met? {
     %w(post-commit post-merge post-checkout post-rewrite)
-      .map { |f| File.join(Dir.pwd, '.git-template', 'hooks', f) }
+      .map { |f| File.join(Dir.pwd, '.git_template', 'hooks', f) }
       .all? { |f| File.exists?(f) }
   }
   meet {
-    dir = File.join(Dir.home, '.git-template')
+    dir = File.join(Dir.home, '.git_template')
     Dir.mkdir(dir) unless Dir.exists?(dir)
-    FileUtils.cp_r(File.join(File.expand_path(File.dirname(__FILE__)), 'git-template', 'hooks'), dir)
+    FileUtils.cp_r(File.join(File.expand_path(File.dirname(__FILE__)), 'git_template', 'hooks'), dir)
   }
 end
 
@@ -143,6 +144,34 @@ dep 'matcher.repo' do
     cd '/tmp' do
       repo = Babushka::GitRepo.new('matcher')
       repo.clone!('https://github.com/burke/matcher.git')
+    end
+  }
+end
+
+dep 'selecta' do
+  requires 'selecta.repo'
+  met? {
+    shell("selecta -v") >= '0.0.6'
+  }
+  meet {
+    cd '/tmp' do
+      cd 'selecta' do
+        'selecta'.to_fancypath.cp('~/bin/selecta'.to_fancypath)
+      end
+    end
+  }
+end
+
+dep 'selecta.repo' do
+  met? {
+    cd '/tmp' do
+      Babushka::GitRepo.new('selecta').exists?
+    end
+  }
+  meet {
+    cd '/tmp' do
+      repo = Babushka::GitRepo.new('selecta')
+      repo.clone!('https://github.com/garybernhardt/selecta.git')
     end
   }
 end
