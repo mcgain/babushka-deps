@@ -14,8 +14,12 @@ def requirements
   return false unless "vim/src/vim".p.exists?
   result = true
   cd "vim" do
-    result &= shell("src/vim --version").include?("+python")
-    result &= shell("src/vim --version").include?("+ruby")
+      require 'pry-byebug'
+      binding.pry
+    vim_version = shell("src/vim --version")
+    %w(+python +ruby +conceal).each do |feature|
+      result &= vim_version.include?(feature)
+    end
     result &= shell("src/vim --version").include?("VIM - Vi IMproved 7.4")
   end
   result
