@@ -29,16 +29,6 @@ dep 'ctags.bin' do
   provides 'ctags'
 end
 
-dep 'vim' do
-  met? {
-    output = shell 'vim --version'
-    output =~ /Vi IMproved 7.4/
-  }
-  meet {
-    puts "you're on your own"
-  }
-end
-
 dep 'vim-config' do
   requires ['dotfiles', 'vundle']
 end
@@ -46,7 +36,7 @@ end
 dep 'vundle' do
   requires 'vundle.repo'
   met? {
-    cd '' do
+    cd '~' do
       regex = /Plugin\s+'[\w-]*\/(.*)'/
       plugins = []
       File.open('.vimrc').readlines.grep(regex){plugins << $1}
@@ -56,17 +46,14 @@ dep 'vundle' do
     end
   }
   meet {
-    shell('git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim')
     shell('vim +PluginInstall +qall')
   }
 end
 
 dep 'vundle.repo' do
   met? {
-    cd '' do
-      cd '.vim/bundle' do
-        Babushka::GitRepo.new('Vundle.vim').exists?
-      end
+    cd '~/.vim/bundle' do
+      Babushka::GitRepo.new('Vundle.vim').exists?
     end
   }
   meet {
