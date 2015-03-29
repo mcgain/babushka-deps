@@ -69,14 +69,14 @@ end
 dep 'dotfiles' do
   requires 'dotfiles.repo'
   met? {
-    cd "" do
+    cd "~" do
       dotfiles.all? do |name|
         File.exists?(name)
       end
     end
   }
   meet {
-    cd "" do
+    cd "~" do
       shell "mkdir old-dotfiles" unless File.exists?('old-dotfiles')
       dotfiles.each do |name|
         shell "mv #{name} old-dotfiles/#{name}" if File.exists?(name)

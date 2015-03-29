@@ -1,3 +1,4 @@
+DO NOT USE WITHOUT CHANGING IT TO USE YOUR DOTFILES!
 A tool for automating your vim compiles.
 
 Compiling vim can be a tricky business sometimes, use this script to do it for you.
