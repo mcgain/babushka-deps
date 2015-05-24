@@ -158,7 +158,7 @@ dep 'selecta.repo' do
   meet {
     cd '/tmp' do
       repo = Babushka::GitRepo.new('selecta')
-      repo.clone!('https://github.com/selecta/selecta.git')
+      repo.clone!('https://github.com/mcgain/selecta.git')
     end
   }
 end
