@@ -1,7 +1,7 @@
 require 'pry-byebug'
 
 dep 'env' do
-  requires 'matcher'
+  #requires 'matcher'
   requires 'vim'
   requires 'vim-config'
   requires 'dotfiles'
